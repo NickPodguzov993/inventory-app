@@ -11,7 +11,7 @@ type Props = {
 }
 const EquipmentFilterType = ({close}: Props) => {
 
-    const allEquipments = useContext(EquipmentsContext)
+    const {initialValue} = useContext(EquipmentsContext)
     function getUniqueEquipments(allEquipments: EquipmentType[]): string[] {
         const uniqueEquipments: string[] = [];
         allEquipments.forEach(d => {
@@ -22,7 +22,7 @@ const EquipmentFilterType = ({close}: Props) => {
         return uniqueEquipments;
     }
 
-    const uniqueEquipments = getUniqueEquipments(allEquipments);
+    const uniqueEquipments = getUniqueEquipments(initialValue);
 
     return (
         <div className="user_filter_container">

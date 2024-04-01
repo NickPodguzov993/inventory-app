@@ -3,20 +3,19 @@
 // День, когда разработка разделилась на до и после
 
 import UserFilter from "../../components/Filters/UserFilter.tsx";
-import {EquipmentType, UsersType} from "../../App.tsx";
+import { UsersType} from "../../App.tsx";
 import UserStatusFilter from "../../components/Filters/UserStatusFilter.tsx";
 import UsersList from "./UsersList.tsx";
 import {useContext, useState} from "react";
 import {UserContext} from "../../Context/UsersContext.tsx";
+import {EquipmentsContext} from "../../Context/EquipmentsContext";
 
 
-type Props = {
-    mockEquipments: EquipmentType[];
-    mockUsers: UsersType[];
-};
 
-const UsersPage = ({mockEquipments}: Props) => {
+
+const UsersPage = () => {
     const allUsers = useContext(UserContext) //получили весь массив пользователей
+    const allEquip = useContext(EquipmentsContext) //получили весь массив пользователей
     const [users, setUsers] = useState<UsersType[]>(allUsers)
 
 
@@ -55,7 +54,7 @@ const UsersPage = ({mockEquipments}: Props) => {
                 <UserFilter setFilter={handleSetFilterDepartment}/>
                 <UserStatusFilter setFilter={handleSetFilterStatus}/>
             </div>
-            <UsersList filteredUsers={users}  mockEquipments={mockEquipments}/>
+            <UsersList filteredUsers={users} mockEquipments={allEquip}/>
         </div>
     );
 };

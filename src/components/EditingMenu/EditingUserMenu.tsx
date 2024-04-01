@@ -7,17 +7,19 @@ import DeleteEquipment from "../SVG/DeleteEquipment.tsx";
 import EditButton from "../Buttons/EditButton.tsx";
 import CancelButton from "../Buttons/CancelButton.tsx";
 import SelectionOfEquipment from "../Cards/SelectionOfEquipment.tsx";
-import {useState} from "react";
+import {useState, useContext} from "react";
 import SelectionDepartmentCard from "../Cards/SelectionDepartmentCard.tsx";
 import UserStatusSelectionCard from "../Cards/UserStatusSelectionCard.tsx";
+import {EquipmentsContext} from "../../Context/EquipmentsContext";
 
 type PropsType = {
     close: () => void,
     user: UsersType,
-    mockEquipments: EquipmentType[];
+    ownership: EquipmentType[]
 
 }
-const EditingUserMenu = ({user, close}: PropsType) => {
+const EditingUserMenu = ({user, close, ownership}: PropsType) => {
+    const {handleAddEquip} = useContext(EquipmentsContext)
     const [openSelectionOfEquipment, setOpenSelectionOfEquipment] = useState<boolean>(false)
     const [openSelectionOfDepartment, setOpenSelectionOfDepartment] = useState<boolean>(false)
     const [openSelectionOfUserStatus, setOpenSelectionOfUserStatus] = useState<boolean>(false)
@@ -105,7 +107,7 @@ const EditingUserMenu = ({user, close}: PropsType) => {
                             </div>
 
                         </div>
-                        {user.equipment.map(e => (
+                        {ownership.map(e => (
                             <div
                                 className="user_equipments"
                                 key={e.id}>

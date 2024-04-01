@@ -3,10 +3,11 @@ import Copy from "../SVG/Copy.tsx";
 import EquipmentCard from "./EquipmentCard.tsx";
 import EquipmentFilterType from "../Filters/EquipmentFilterType.tsx";
 import EditButton from "../Buttons/EditButton.tsx";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import EditingUserMenu from "../EditingMenu/EditingUserMenu.tsx";
 import Profile from "../SVG/Profile.tsx";
 import Close from "../SVG/Close.tsx";
+import {EquipmentsContext} from "../../Context/EquipmentsContext";
 
 type Props = {
     closeCard: () => void,
@@ -15,17 +16,26 @@ type Props = {
 }
 const UserCard = ({closeCard, user, mockEquipments}: Props) => {
     const [openEditMenu, setOpenEditMenu] = useState<boolean>(false)
+    const {initialValue} = useContext(EquipmentsContext)
+    const [ownership, setOwnership] = useState([])
+
+    useEffect(()=> {
+        setOwnership(initialValue?.filter((item) => item.ownerId === user.id))
+    }, [initialValue])
+
     const handleOpenEditMenu = () => {
         setOpenEditMenu(true)
     }
     const handleCloseMenu = () => {
         setOpenEditMenu(false)
     }
+
+
     return (
         <div
             className="fixed  w-full inset-0 flex flex-row items-start justify-start z-30 bg-black bg-opacity-40">
 
-            {openEditMenu ? <EditingUserMenu mockEquipments={mockEquipments} user={user} close={handleCloseMenu}/>
+            {openEditMenu ? <EditingUserMenu mockEquipments={mockEquipments} user={user} ownership={ownership} close={handleCloseMenu}/>
                 : <div
                     className="flex flex-col relative sm:w-[640px] h-[900px] sm:h-full w-full left-0 py-8 px-4 sm:p-8 fc gap-8 bg-white sm:rounded-r-[40px]">
                     <Close close={closeCard}/>
@@ -61,7 +71,7 @@ const UserCard = ({closeCard, user, mockEquipments}: Props) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            {user.equipment.map(e => (
+                            {ownership.map(e => (
                                 <EquipmentCard id={e.id} title={e.title} status={e.status} type={e.type}/>
                             ))}
                         </div>
